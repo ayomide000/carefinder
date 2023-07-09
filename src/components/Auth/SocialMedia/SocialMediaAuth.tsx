@@ -58,9 +58,9 @@ const signInWithFacebook = async () => {
           try {
             setLoading(true)
         const result = await signInWithRedirect(auth, facebookProvider);
+        const user = result.user
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        const user = result.user
         setUser(user)
         navigate('/login')
           console.log('Facebook sign-in successful:', user);

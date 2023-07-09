@@ -12,7 +12,7 @@ const FindHospital = () => {
                 </div>
                 <div className='flex gap-4 justify-center'>
                     <button className='bg-[#08299B] px-5 rounded-lg self-center py-2'><AiOutlineSearch class="text-white" size="25"/></button>
-                    <img src={Avi} alt="Avi" classN ame='h-14 self-center'/>
+                    <img src={Avi} alt="Avi" className='h-14 self-center'/>
                 </div>
             </article>
         </section>
