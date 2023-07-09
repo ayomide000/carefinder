@@ -10,31 +10,31 @@ import {auth} from '../../config/firebase'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import AuthenticatedPage from './AuthenticatedPage'
+// import AuthenticatedPage from './AuthenticatedPage'
 import { Dna } from 'react-loader-spinner'
-import SocialMediaAuth from './SocialMedia/SocialMediaAuth'
+import SocialMediaAuth from './SocialMedia/SocialMediaAuth.jsx'
 import Login from './Login'
 
 
 
-type UserProps = {
-  user : Record<string, unknown>
-}
+// type UserProps = {
+//   user : Record<string, unknown>
+// }
 
 const SignUp = () => {
 
   // const firebaseApp = useFirebaseApp()
   // const auth = useAuth()
 
-  const [name, setName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
   const [hideLogin, setHideLogin] = useState(false)
 
     // const arrayUser =  [auth.currentUser]
     // console.log(arrayUser);
-    const [user, setUser] = useState <UserProps | null >(null)
+    const [user, setUser] = useState(null)
     // const [user, setUser] = useState <UserCredential | null>(null)
     const [loading, setLoading] =  useState(false)
     console.log(user);
@@ -44,21 +44,21 @@ const SignUp = () => {
   // console.log(auth?.currentUser?.photoURL)
   // console.log(auth?.currentUser?.phoneNumber)
 
-   const handleSignUp = async (e: React.FormEvent) => {
+   const handleSignUp = async (e) => {
     e.preventDefault()
     try { 
       setLoading(true)
        const userData =  await createUserWithEmailAndPassword(auth, email, password)
        const user = userData.user 
-       if (user) {
-        (user as User).sendEmailVerification().then(() => {
-          // Email sent successfully
-          console.log('Verification email sent!');
-        }).catch((error) => {
-          // Handle any errors
-          console.error('Error sending verification email:', error);
-        });
-      }
+      //  if (user) {
+      //   (user.sendEmailVerification().then(() => {
+      //     // Email sent successfully
+      //     console.log('Verification email sent!');
+      //   }).catch((error) => {
+      //     // Handle any errors
+      //     console.error('Error sending verification email:', error);
+      //   });
+      // }
        setUser(user)
         navigate('/login')
        console.log(user);
@@ -220,7 +220,7 @@ const SignUp = () => {
             <AiOutlineTwitter color="#1DA1F2" size="35" onClick={signInWithTwitter} class="cursor-pointer"/>
             <FaFacebook color="#1877F2" size="35" onClick={signInWithFacebook} class="cursor-pointer"/>
           </div> */}
-          <SocialMediaAuth user={user} setUser={setUser} navigate={navigate} loading={loading} setLoading={setLoading}  auth={auth} setLoading={setLoading}/> 
+          <SocialMediaAuth user={user} setUser={setUser} navigate={navigate} loading={loading} setLoading={setLoading}  auth={auth}/> 
           <p className='my-3'>Already have an account? <Link to="/login" className='text-[#08299B]'>Login</Link></p>
         </form>
         {/* <h2 className='h-screen text-center bg-red-500 text-white text-4xl'>Logged in successfully</h2> */}

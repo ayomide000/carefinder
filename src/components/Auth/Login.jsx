@@ -4,21 +4,21 @@ import {FcGoogle} from 'react-icons/fc'
 // import {AiOutlineTwitter} from 'react-icons/ai'
 // import {FaFacebook} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import SocialMediaAuth from './SocialMedia/SocialMediaAuth'
+import SocialMediaAuth from './SocialMedia/SocialMediaAuth.jsx'
 import { useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import {auth} from '../../config/firebase'
 
 const Login = () => {
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const [user, setUser] = useState <UserProps | null >(null)
+  const [user, setUser] = useState(null)
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e) => {
       e.preventDefault()
       try { 
         setLoading(true)
