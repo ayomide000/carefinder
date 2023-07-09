@@ -5,15 +5,15 @@ import Injection from '../../assets/Auth/Injection.png'
 // import {FaFacebook} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 // import {auth, googleProvider, facebookProvider, twitterProvider} from '../../config/firebase'
-import {auth} from '../../config/firebase'
+import {auth} from '../../config/firebase.js'
 // import { createUserWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 // import AuthenticatedPage from './AuthenticatedPage'
 import { Dna } from 'react-loader-spinner'
-import SocialMediaAuth from './SocialMedia/SocialMediaAuth.jsx'
-import Login from './Login'
+import SocialMediaAuth from './SocialMedia/SocialMediaAuth.js'
+import Login from './Login.js'
 
 
 

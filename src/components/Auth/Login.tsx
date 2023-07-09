@@ -1,14 +1,14 @@
 // import Stethoscope from '../../assets/Auth/Stethoscope.png'
 import Injection from '../../assets/Auth/Injection.png'
-import {FcGoogle} from 'react-icons/fc'
+// import {FcGoogle} from 'react-icons/fc'
 // import {AiOutlineTwitter} from 'react-icons/ai'
 // import {FaFacebook} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import SocialMediaAuth from './SocialMedia/SocialMediaAuth.jsx'
+import SocialMediaAuth from './SocialMedia/SocialMediaAuth.js'
 import { useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import {auth} from '../../config/firebase'
+import {auth} from '../../config/firebase.js'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -16,9 +16,9 @@ const Login = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<SetStateAction | undefined>()
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: HTMLFormElement) => {
       e.preventDefault()
       try { 
         setLoading(true)
