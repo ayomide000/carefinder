@@ -59,6 +59,9 @@ input:focus {
 input:focus:invalid {
   border: 1px solid red;
 }
+input:focus:valid {
+  border: 1px solid green;
+}
 
 /* 
 h1 {

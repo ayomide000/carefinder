@@ -1,15 +1,19 @@
 // import Stethoscope from '../../assets/Auth/Stethoscope.png'
 import Injection from '../../assets/Auth/Injection.png'
-import {FcGoogle} from 'react-icons/fc'
-import {AiOutlineTwitter} from 'react-icons/ai'
-import {FaFacebook} from 'react-icons/fa'
+// import {FcGoogle} from 'react-icons/fc'
+// import {AiOutlineTwitter} from 'react-icons/ai'
+// import {FaFacebook} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import {auth, googleProvider, facebookProvider, twitterProvider} from '../../config/firebase'
-import { createUserWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth'
+// import {auth, googleProvider, facebookProvider, twitterProvider} from '../../config/firebase'
+import {auth} from '../../config/firebase'
+// import { createUserWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import AuthenticatedPage from './AuthenticatedPage'
 import { Dna } from 'react-loader-spinner'
+import SocialMediaAuth from './SocialMedia/SocialMediaAuth'
+import Login from './Login'
 
 
 
@@ -26,10 +30,11 @@ const SignUp = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const navigate = useNavigate()
+  const [hideLogin, setHideLogin] = useState(false)
 
     // const arrayUser =  [auth.currentUser]
     // console.log(arrayUser);
-    const [user, setUser] = useState <UserProps | null>(null)
+    const [user, setUser] = useState <UserProps | null >(null)
     // const [user, setUser] = useState <UserCredential | null>(null)
     const [loading, setLoading] =  useState(false)
     console.log(user);
@@ -44,8 +49,24 @@ const SignUp = () => {
     try { 
       setLoading(true)
        const userData =  await createUserWithEmailAndPassword(auth, email, password)
-       setUser(userData)
-      navigate('/login')
+       const user = userData.user 
+       if (user) {
+        (user as User).sendEmailVerification().then(() => {
+          // Email sent successfully
+          console.log('Verification email sent!');
+        }).catch((error) => {
+          // Handle any errors
+          console.error('Error sending verification email:', error);
+        });
+      }
+       setUser(user)
+        navigate('/login')
+       console.log(user);
+      //  if(user.emailVerified) {
+      //    navigate('/login')
+      //  } else {
+      //   console.log('Kindly provide a valid email');
+      //  }
     } catch (err) {
         console.error('Signup Error:', err)
         setLoading(false)
@@ -56,77 +77,80 @@ const SignUp = () => {
    }
 
 
-   const signInWithGoogle = async () => {
-    try { 
-      setLoading(true)
-      const userData = await signInWithPopup(auth, googleProvider)
-      setUser(userData)
-    } catch (err) {
-        console.error('Google Sign-in Error:', err)
-        setLoading(false)
-    }
-    finally {
-      setLoading(false)
-    }
+  //  const signInWithGoogle = async () => {
+  //   try { 
+  //     setLoading(true)
+  //     const userData = await signInWithPopup(auth, googleProvider)
+  //     setUser(userData)
+  //     navigate('/login')
+  //   } catch (err) {
+  //       console.error('Google Sign-in Error:', err)
+  //       setLoading(false)
+  //   }
+  //   finally {
+  //     setLoading(false)
+  //   }
   
-  }
+  // }
 
-   const signInWithTwitter = async () => {
-    try { 
-      setLoading(true)
-      const result = await signInWithPopup(auth, twitterProvider)
-      const credential = TwitterAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const secret = credential.secret;
+  //  const signInWithTwitter = async () => {
+  //   try { 
+  //     setLoading(true)
+  //     const result = await signInWithPopup(auth, twitterProvider)
+  //     const credential = TwitterAuthProvider.credentialFromResult(result);d
+  //     const token = credential.accessToken;
+  //     const secret = credential.secret;
 
-    // The signed-in user info.
-    const user = result.user;
-    setUser(user)
-    } catch (error) {
-      // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = TwitterAuthProvider.credentialFromError(error);
-        console.error('Apple Sign-in Error:', error)
-        setLoading(false)
-    }
-    finally {
-      setLoading(false)
-    }
+  //   // The signed-in user info.
+  //   const user = result.user;
+  //   setUser(user)
+  //   navigate('/login')
+  //   } catch (error) {
+  //     // Handle Errors here.
+  //   const errorCode = error.code;
+  //   const errorMessage = error.message;
+  //   // The email of the user's account used.
+  //   const email = error.customData.email;
+  //   // The AuthCredential type that was used.
+  //   const credential = TwitterAuthProvider.credentialFromError(error);
+  //       console.error('Apple Sign-in Error:', error)
+  //       setLoading(false)
+  //   }
+  //   finally {
+  //     setLoading(false)
+  //   }
 
-  }
+  // }
 
-   const signInWithFacebook = async () => {
-          try {
-            setLoading(true)
-        const result = await signInWithRedirect(auth, facebookProvider);
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
-        const user = result.user
-        setUser(user)
-          console.log('Facebook sign-in successful:', user);
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+  //  const signInWithFacebook = async () => {
+  //         try {
+  //           setLoading(true)
+  //       const result = await signInWithRedirect(auth, facebookProvider);
+  //       const credential = FacebookAuthProvider.credentialFromResult(result);
+  //       const accessToken = credential.accessToken;
+  //       const user = result.user
+  //       setUser(user)
+  //       navigate('/login')
+  //         console.log('Facebook sign-in successful:', user);
+  //         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
           
         
-      } catch (error) {
-          // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
+  //     } catch (error) {
+  //         // Handle Errors here.
+  //   const errorCode = error.code;
+  //   const errorMessage = error.message;
 
 
 
-    const credential = FacebookAuthProvider.credentialFromError(error);
-        console.error('Error signing in with Facebook:', error);
-        setLoading(false)
-      }
-      finally {
-        setLoading(false)
-      }
+  //   const credential = FacebookAuthProvider.credentialFromError(error);
+  //       console.error('Error signing in with Facebook:', error);
+  //       setLoading(false)
+  //     }
+  //     finally {
+  //       setLoading(false)
+  //     }
 
-  }
+  // }
 
    const logout = async () => {
     try { 
@@ -149,8 +173,8 @@ const SignUp = () => {
   wrapperStyle={{}}
   wrapperClass="dna-wrapper"
 />}
-    {user ? <AuthenticatedPage user={user} /> : (
-
+    {/* {user ? <AuthenticatedPage user={user} /> : ( */}
+    { hideLogin && <Login user={user} navigate={navigate} setLoading={setLoading} auth={auth}/>}
     <section className="bg-[#E0E4EC] text-black text-center text-xl h-auto w-full grid grid-cols-2">
       <article className="bg-white rounded-2xl ml-9 my-[4rem]">
         
@@ -163,6 +187,7 @@ const SignUp = () => {
             required
             minLength={6}
             maxLength={12}
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
@@ -171,6 +196,7 @@ const SignUp = () => {
             type="email" 
             placeholder='Enter Email Address'
             required
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
@@ -180,7 +206,7 @@ const SignUp = () => {
             placeholder='Enter Password'
             required
             minLength={6}
-            maxLength={12}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
@@ -189,11 +215,12 @@ const SignUp = () => {
           <p className='w-1/2 mx-auto font-semibold text-2xl text-black'>OR</p>
 
             {/* SIGNIN ICONS  */}
-          <div className='w-1/2 mx-auto flex gap-6 justify-center'>
+          {/* <div className='w-1/2 mx-auto flex gap-6 justify-center'>
             <FcGoogle size="35" onClick={signInWithGoogle} class="cursor-pointer"/>
             <AiOutlineTwitter color="#1DA1F2" size="35" onClick={signInWithTwitter} class="cursor-pointer"/>
             <FaFacebook color="#1877F2" size="35" onClick={signInWithFacebook} class="cursor-pointer"/>
-          </div>
+          </div> */}
+          <SocialMediaAuth user={user} setUser={setUser} navigate={navigate} loading={loading} setLoading={setLoading}  auth={auth} setLoading={setLoading}/> 
           <p className='my-3'>Already have an account? <Link to="/login" className='text-[#08299B]'>Login</Link></p>
         </form>
         {/* <h2 className='h-screen text-center bg-red-500 text-white text-4xl'>Logged in successfully</h2> */}
@@ -210,7 +237,7 @@ const SignUp = () => {
       </article>
       
     </section>
-    )}
+    {/* )} */}
     </>
   )
 }
