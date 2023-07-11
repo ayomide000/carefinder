@@ -9,13 +9,14 @@ import {auth} from '../../config/firebase.js'
 // import { createUserWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 // import AuthenticatedPage from './AuthenticatedPage'
 import { Dna } from 'react-loader-spinner'
 import SocialMediaAuth from './SocialMedia/SocialMediaAuth.js'
 import Login from './Login.js'
 
 
+type OnsubmitType = (e: FormEvent<HTMLFormElement>) => Promise<void>
 
 // type UserProps = {
 //   user : Record<string, unknown>
@@ -30,21 +31,22 @@ const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
-  const [hideLogin, setHideLogin] = useState(false)
+  // const [hideLogin, setHideLogin] = useState(false)
+  const hideLogin = false
 
     // const arrayUser =  [auth.currentUser]
     // console.log(arrayUser);
-    const [user, setUser] = useState(null)
+    // const [user, setUser] = useState()
     // const [user, setUser] = useState <UserCredential | null>(null)
     const [loading, setLoading] =  useState(false)
-    console.log(user);
+    // console.log(user);
 
   // console.log(auth?.currentUser)11
   // console.log(auth?.currentUser?.email)
   // console.log(auth?.currentUser?.photoURL)
   // console.log(auth?.currentUser?.phoneNumber)
 
-   const handleSignUp = async (e) => {
+   const handleSignUp: OnsubmitType = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try { 
       setLoading(true)
@@ -59,9 +61,11 @@ const SignUp = () => {
       //     console.error('Error sending verification email:', error);
       //   });
       // }
-       setUser(user)
+      //  setUser(user)
+      if(user) {
         navigate('/login')
        console.log(user);
+      }
       //  if(user.emailVerified) {
       //    navigate('/login')
       //  } else {
@@ -174,7 +178,7 @@ const SignUp = () => {
   wrapperClass="dna-wrapper"
 />}
     {/* {user ? <AuthenticatedPage user={user} /> : ( */}
-    { hideLogin && <Login user={user} navigate={navigate} setLoading={setLoading} auth={auth}/>}
+    { hideLogin && <Login/>}
     <section className="bg-[#E0E4EC] text-black text-center text-xl h-auto w-full grid grid-cols-2">
       <article className="bg-white rounded-2xl ml-9 my-[4rem]">
         
@@ -220,7 +224,7 @@ const SignUp = () => {
             <AiOutlineTwitter color="#1DA1F2" size="35" onClick={signInWithTwitter} class="cursor-pointer"/>
             <FaFacebook color="#1877F2" size="35" onClick={signInWithFacebook} class="cursor-pointer"/>
           </div> */}
-          <SocialMediaAuth user={user} setUser={setUser} navigate={navigate} loading={loading} setLoading={setLoading}  auth={auth}/> 
+          <SocialMediaAuth setLoading={setLoading}/> 
           <p className='my-3'>Already have an account? <Link to="/login" className='text-[#08299B]'>Login</Link></p>
         </form>
         {/* <h2 className='h-screen text-center bg-red-500 text-white text-4xl'>Logged in successfully</h2> */}

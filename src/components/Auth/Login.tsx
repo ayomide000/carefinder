@@ -5,10 +5,12 @@ import Injection from '../../assets/Auth/Injection.png'
 // import {FaFacebook} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import SocialMediaAuth from './SocialMedia/SocialMediaAuth.js'
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import {auth} from '../../config/firebase.js'
+import { Dna } from 'react-loader-spinner'
+// import SocialMediaLogin from './SocialMedia/SocialMediaLogin.js'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -16,15 +18,15 @@ const Login = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const [user, setUser] = useState<SetStateAction | undefined>()
+  // const [user, setUser] = useState<SetStateAction | undefined>()
 
-  const handleLogin = async (e: HTMLFormElement) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       try { 
         setLoading(true)
         const userData =  await createUserWithEmailAndPassword(auth, email, password)
         const user = userData.user     
-        setUser(user)
+        // setUser(user)
         // console.log(user);
         if(user) navigate('/findhospital')
         console.log(user);
@@ -39,6 +41,14 @@ const Login = () => {
 
   return (
     <>
+    {loading && <Dna
+  visible={true}
+  height="80"
+  width="80"
+  ariaLabel="dna-loading"
+  wrapperStyle={{}}
+  wrapperClass="dna-wrapper"
+/>}
     <section className="bg-[#E0E4EC] text-black text-center text-xl h-auto w-full grid grid-cols-2">
       <article className="bg-white rounded-2xl ml-9 my-[4rem]">
         <h2 className='text-center font-bold text-4xl mt-6 mb-3'>Welcome Back</h2>
@@ -71,7 +81,7 @@ const Login = () => {
             <AiOutlineTwitter color="#1DA1F2" size="35"/>
             <FaFacebook color="#1877F2" size="35"/>
           </div> */}
-          <SocialMediaAuth/>
+          <SocialMediaAuth setLoading ={setLoading}/>
           <p className='mt-6'>Already have an account? <Link to="/signup" className='text-[#08299B]'>Signup!</Link></p>
         </form>
       </article>

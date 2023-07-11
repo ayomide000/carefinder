@@ -1,4 +1,4 @@
-import IMG1 from '../../assets/Landing Page/Section1.jpg'
+// import IMG1 from '../../assets/Landing Page/Section1.jpg'
 import Rec1 from '../../assets/Landing Page/Rectangle 1.png'
 import {AiOutlineArrowRight} from 'react-icons/ai'
 import {CiLocationOn} from 'react-icons/ci'
